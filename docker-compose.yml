@@ -1,13 +1,13 @@
-version: "3.5"
+version: "3.6"
 
 services:
   mariadb:
     image: mariadb:latest
     environment:
-      MYSQL_ROOT_PASSWORD: jK2XORavWC8fL3b41jjqnD316ROe
+      MYSQL_ROOT_PASSWORD: /run/secrets/db_root_password
       MYSQL_DATABASE: restestdb
       MYSQL_USER: lasileuka
-      MYSQL_PASSWORD: E7IBKyBOu5UBGVDq1V9hn6ZEjK2s
+      MYSQL_PASSWORD: /run/secrets/db_password
     ports:
       - 7306:3306
     volumes:
@@ -18,7 +18,7 @@ services:
     environment:
       DB_HOST: mariadb
       DB_USER: lasileuka
-      DB_PASSWORD: E7IBKyBOu5UBGVDq1V9hn6ZEjK2s
+      DB_PASSWORD: /run/secrets/drupal_password
       DB_NAME: restestdb
       DB_DRIVER: mysql
     links:
@@ -40,6 +40,14 @@ services:
       NGINX_ERROR_LOG_LEVEL: debug
       NGINX_BACKEND_HOST: php
       NGINX_SERVER_ROOT: /var/www/html
+
+secrets:
+  db_password:
+    file: db_password.txt
+  db_root_password:
+    file: db_root_password.txt
+  drupal_password:
+    file: drupal_password.txt
 
 volumes:
   mysqldata: {}
